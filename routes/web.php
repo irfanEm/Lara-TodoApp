@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::view('/template', 'templates')->name('test-templates');
+
+Route::controller(UserController::class)->group(function(){
+    Route::get('/login', 'login')->name('login.page');
+    Route::post('/login', 'doLogin')->name('login.post');
+    Route::get('/logout', 'doLogout')->name('logout');
 });
