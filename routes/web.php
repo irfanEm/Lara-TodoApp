@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\hanyaTamuMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +16,12 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'home']);
 
 Route::view('/template', 'templates')->name('test-templates');
 
 Route::controller(UserController::class)->group(function(){
-    Route::get('/login', 'login')->name('login.page');
-    Route::post('/login', 'doLogin')->name('login.post');
-    Route::get('/logout', 'doLogout')->name('logout');
+    Route::get('/login', 'login')->name('login.page')->middleware([hanyaTamuMiddleware::class]);
+    Route::post('/login', 'doLogin')->name('login.post')->middleware([hanyaTamuMiddleware::class]);
+    Route::post('/logout', 'doLogout')->name('logout');
 });

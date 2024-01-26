@@ -36,4 +36,40 @@ class UserControllerTest extends TestCase
         ])
             ->assertSeeText('User atau password salah !')->assertSeeText('Login');
     }
+
+    public function testLogout()
+    {
+        $this->withSession([
+            "user" => "balqis_fa"
+        ])->post("/logout")
+            ->assertRedirect("/")
+            ->assertSessionMissing("user");
+    }
+
+    public function testLogoutGuest()
+    {
+        $this->post("/logout")
+            ->assertRedirect("/");
+    }
+
+    public function testLoginSuccess()
+    {
+        $this->post("/login", [
+            "user" => "irfan_em",
+            "password" => "271197"
+        ])->assertRedirect("/")
+            ->assertSessionHas("user", "irfan_em")
+            ->assertRedirect("/");
+    }
+
+    public function testLoginUserSudahLogin()
+    {
+        $this->withSession([
+            "user" => "irfan_em"
+        ])->post("/login", [
+            "user" => "irfan_em",
+            "password" => "271197"
+        ])->assertRedirect("/")
+            ->assertRedirect("/");
+    }
 }
