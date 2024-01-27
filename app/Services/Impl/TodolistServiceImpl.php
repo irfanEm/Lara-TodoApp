@@ -19,4 +19,24 @@ class TodolistServiceImpl implements TodolistService
             "todo" => $todo
         ]);
     }
+    
+    public function getTodo(): array
+    {
+        return Session::get("todolist", []);
+    }
+
+    public function hapusTodo(string $idTodo)
+    {
+        $todolist = Session::get("todolist");
+
+        foreach($todolist as $id => $value)
+        {
+            if($value['id'] == $idTodo){
+                unset($todolist[$id]);
+                break;
+            }
+        }
+
+        Session::put("todolist", $todolist);
+    }
 }

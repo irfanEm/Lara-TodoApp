@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TodolistController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\hanyaTamuMiddleware;
+use App\Http\Middleware\HanyaUserMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +26,10 @@ Route::controller(UserController::class)->group(function(){
     Route::get('/login', 'login')->name('login.page')->middleware([hanyaTamuMiddleware::class]);
     Route::post('/login', 'doLogin')->name('login.post')->middleware([hanyaTamuMiddleware::class]);
     Route::post('/logout', 'doLogout')->name('logout');
+});
+
+Route::controller(TodolistController::class)->middleware(HanyaUserMiddleware::class)->group(function(){
+    Route::get('/todolist', 'todoPage')->name('page.todolist');
+    Route::post('/todolist', 'tambahTodo')->name('tambah.todolist');
+    Route::post('/todolist/{id}/hapus', 'hapusTodo')->name('hapus.todolist');
 });
